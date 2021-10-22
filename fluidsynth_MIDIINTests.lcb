@@ -1,7 +1,7 @@
-library com.ferruslogic.library.fluidsynth
+library org.oxt.library.fluidsynth
 
 metadata version is "0.5"
-metadata author is "FerrusLogic, Paul McClernan"
+metadata author is "Paul McClernan,FerrusLogic"
 metadata title is "LC FluidSynth"
 
 use com.livecode.foreign
