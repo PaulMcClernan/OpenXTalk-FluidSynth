@@ -47,6 +47,8 @@ __safe foreign handler fluid_settings_getint(in pSettings as fs_SETTINGS, in pSe
 __safe foreign handler fluid_settings_setstr(in pSettings as fs_SETTINGS, in pSettingName as ZStringNative, in pSettingString as ZStringNative) returns Cbool binds to "c:libfluidsynth>fluid_settings_setstr"
 __safe foreign handler fluid_settings_getstr(in pSettings as fs_SETTINGS, in pSettingName as ZStringNative, out rSettingString as ZStringNative) returns CBool binds to "c:libfluidsynth>fluid_settings_getstr"
 
+__safe foreign handler fluid_settings_getstr_default(in pSettings as fs_SETTINGS, in pSettingName as ZStringNative, out rSettingString as ZStringNative) returns CBool binds to "c:libfluidsynth>fluid_settings_getstr_default"
+
 __safe foreign handler fluid_is_midifile(in pFilename as ZStringNative ) returns CBool binds to "c:libfluidsynth>fluid_is_midifile"
 __safe foreign handler fluid_is_soundfont(in pFilename as ZStringNative ) returns CBool binds to "c:libfluidsynth>fluid_is_soundfont"
 __safe foreign handler fluid_version(out rMaj as CInt, out rMin as CInt, out rMicr as CInt) returns nothing binds to "c:libfluidsynth>fluid_version"
@@ -286,6 +288,8 @@ end handler
 public handler fsEnsureInitialize() returns optional any
    variable tStrPtr as Pointer
    variable tString as String
+   variable tWasSet as CSInt
+
 	if mInited then
 		return mInited
 	else
@@ -298,7 +302,15 @@ public handler fsEnsureInitialize() returns optional any
       if MCStringCreateWithCString(tStrPtr, tString) then
          log ["FluidSynth Version:" && tString]
       end if
+
       put new_fluid_settings() into mSettings
+
+      -- put fluid_settings_getstr_default(mSettings,"audio.driver",tStrPtr) into tWasSet
+      -- if MCStringCreateWithCString(tStrPtr, tString) then
+      --   log ["FluidSynth Default:" && tString]
+      -- end if
+      fluid_settings_setint(mSettings, "audio.jack.autoconnect", 1)
+
       put new_fluid_synth(mSettings) into mSynth
    	put new_fluid_audio_driver(mSettings,mSynth) into mAudioDriver
       if mAudioDriver is not nothing then
