@@ -2,7 +2,7 @@ library org.oxt.library.fluidsynth
 
 metadata version is "0.5"
 metadata author is "Paul McClernan,FerrusLogic"
-metadata title is "LC FluidSynth"
+metadata title is "OpenXTalk.org FluidSynth"
 
 use com.livecode.foreign
 use com.livecode.canvas
@@ -285,6 +285,19 @@ public handler fsInitMIDIinput(in pInputPortName as optional String, in pTargetS
 	end if
 end handler
 
+/**
+Setup the libFluidSynth Engine .
+
+Type: function
+
+Example:
+fsEnsureInitialize()
+
+Returns: True on success, false or error string on failure.
+
+Description:
+Attempts to load an instance of libFluidSynth.
+*/
 public handler fsEnsureInitialize() returns optional any
    variable tStrPtr as Pointer
    variable tString as String
@@ -322,6 +335,21 @@ public handler fsEnsureInitialize() returns optional any
    end if
 end handler
 
+
+
+/**
+Check the ammount of CPU load the FluidSynth library is currently using.
+
+Type: function
+
+Example:
+get fsGetCPULoad()
+
+Returns: The ammount of CPU load the FluidSynth library is currently using.
+
+Description:
+Returns the ammount of CPU load the FluidSynth library is currently using.
+*/
 public handler fsGetCPULoad() returns optional any
    if fsEnsureInitialize() then
       if mSynth is not nothing then
@@ -330,6 +358,19 @@ public handler fsGetCPULoad() returns optional any
    end if
 end handler
 
+/**
+Get the number of SoundFonts that are loaded by the FluidSynth library
+
+Type: function
+
+Example:
+get fsGetSoundFontCount()
+
+Returns: The number of SoundFonts that are loaded by the FluidSynth library.
+
+Description:
+Returns the number of SoundFonts that are loaded by the FluidSynth library.
+*/
 public handler fsGetSoundFontCount() returns optional Integer
 	variable tCount as Integer
 	if fsEnsureInitialize() then
