@@ -1,4 +1,4 @@
-library org.oxt.library.fluidsynth
+library org.openxtalk.library.fluidsynth
 
 metadata version is "0.5"
 metadata author is "Paul McClernan,FerrusLogic"
