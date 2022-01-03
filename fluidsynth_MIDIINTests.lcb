@@ -3,6 +3,8 @@ library org.openxtalk.library.fluidsynth
 metadata version is "0.5"
 metadata author is "Paul McClernan,FerrusLogic"
 metadata title is "OpenXTalk.org FluidSynth"
+metadata userVisible is "true" -- Show Widget in ... ?
+metadata _ide is "true" -- ? default load at startup
 
 use com.livecode.foreign
 use com.livecode.canvas
