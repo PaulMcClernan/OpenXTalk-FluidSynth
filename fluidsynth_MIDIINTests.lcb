@@ -1,6 +1,6 @@
 library org.openxtalk.library.fluidsynth
 
-metadata version is "0.5"
+metadata version is "0.6"
 metadata author is "Paul McClernan,FerrusLogic"
 metadata title is "OpenXTalk.org FluidSynth"
 metadata userVisible is "true" -- Show Widget in ... ?
@@ -577,6 +577,7 @@ public handler fsGetSoundFontNameByIndex(in tIndex as optional Integer) returns 
    end if
 end handler
 
+
 public handler fsMIDIPlayerInit() returns optional any
 	if mPlayer is nothing then
 		if fsEnsureInitialize() then
@@ -592,6 +593,21 @@ public handler fsMIDIPlayerSetLoop(in pLoop as Number) returns nothing
 	end if
 end handler
 
+/**
+Loads a MIDI file from and a Soundbank file from file paths and prepares for playback.
+
+Example:
+fsLoadMIDIFile "/Users/Me/MIDIMusic.mid","path/to/SoundBank.sf2"
+
+Parameters:
+MIDIfilePath (string): the file path to a MIDI file
+SoundFontPath (string): the file path to a SoundBank SF2 or DLS file
+
+Description:
+Loads a MIDI file from and a Soundbank file in either SoundFont2 or
+Downloadable Sound DLS format from absolute file paths passed in and
+"prerolls" the data, preparing it for playback.
+*/
 public handler fsLoadMIDIFile(in pFilename as String) returns optional any
 	variable tStatus as Integer
 	variable tBool as Boolean
@@ -617,6 +633,32 @@ public handler fsLoadMIDIFile(in pFilename as String) returns optional any
 	end if
 end handler
 
+
+/**
+Returns the current position of playing sequence in MIDI ticks.
+
+Example:
+function SecsToHrsMinSecs pSecs -- in seconds.millisecs
+   lock screen
+   split pSecs by "."
+   put trunc(pSecs[1]) into deltaTime
+   put trunc(deltaTime div 3600) into h -- hours
+   put trunc((deltaTime - (h * 3600)) / 60) into m -- minutes
+   put deltaTime - (h * 3600) - (m * 60) into s -- seconds
+   put format( "%01i:%02i:%02i", h, m, s ) &":"& pSecs[2] into displayTime
+   return displayTime
+end SecsToHrsMinSecs
+put SecsToHrsMinSecs(AVMIDIPlayerSetCurrentPosition())
+
+Example:
+set the thumbPosition of scrollBar "PlayBackProgress" to AVMIDIPlayerSetCurrentPosition()
+
+Description:
+Returns the current position of playback in seconds and microseconds.
+Use for displaying the current playback progress or current time within a sequence.
+Note that current position will continue to increment past the sequence duration
+until a stop command is issued.
+*/
 public handler fsMIDIPlayerCurrentTick() returns optional any
 	variable tTick as Integer
 	variable tBool as Boolean
@@ -643,6 +685,15 @@ public handler fsMIDIPlayerTotalTicks() returns optional any
 	-- __safe foreign handler (in pPlayer as fs_PLAYER) returns CInt binds to "c:libfluidsynth>fluid_player_get_total_ticks"
 end handler
 
+/**
+Stops playback
+
+Example:
+fsMIDIPlayerStop
+
+Description:
+Stops playback of data playback stated with fsMIDIPlayerPlay.
+*/
 public handler fsMIDIPlayerStop()
 	if mPlayer is not nothing then
 		fluid_player_stop(mPlayer)
@@ -657,6 +708,15 @@ public handler fsMIDIPlayerPause()
 	end if
 end handler
 
+/**
+Plays the data that was loaded with fsLoadMIDIFile
+
+Example:
+fsMIDIPlayerPlay
+
+Description:
+Plays the data that was loaded with either AVMIDIPlayerLoad or AVMIDIPlayerLoadURLs
+*/
 public handler fsMIDIPlayerPlay() returns optional any
 	if mPlayer is not nothing then
 		variable tStatus as Integer
@@ -669,6 +729,15 @@ public handler fsMIDIPlayerPlay() returns optional any
 	end if
 end handler
 
+/**
+Checks to see if MIDI Data is currently being played back
+
+Example:
+ if fsMIDIPlayerStatus() is "playing" then fsMIDIPlayerStop
+
+Description:
+A boolean that indicates if MIDI Data is currently being played back.
+*/
 public handler fsMIDIPlayerStatus() returns optional any
 	variable tStatus as Integer
 	if mPlayer is not nothing then
