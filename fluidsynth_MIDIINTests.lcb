@@ -248,7 +248,7 @@ private variable mMIDIBuffer as Data
 private variable mMIDIEvtPtr as optional Pointer
 variable mScriptObject as ScriptObject
 
-public handler fsInitMIDIinput(in pInputPortName as optional String, in pTargetScriptObj as optional String) returns optional any
+public handler fsInitMIDIinput(in pInputPortName as optional String, in pTargetScriptObj as optional String) -- returns optional any
 	if pTargetScriptObj is not nothing then
 		resolve script object pTargetScriptObj
 		put the result into mScriptObject
