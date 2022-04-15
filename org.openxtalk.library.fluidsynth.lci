@@ -7,6 +7,7 @@ import module org.openxtalk.library.fluidsynth
   use com.livecode.logic
   use com.livecode.string
   use com.livecode.type
+  use com.livecode.assert
   foreign handler type handle_midi_event_func_t(in pOptionalDataPtr as optional Pointer, in mMIDIEvtPtr as Pointer) returns CSInt
   handler fsSetMIDIInTargetScriptObj(in pTargetScriptObj as optional String) returns optional any
   handler fsInitMIDIinput(in pInputPortName as optional String, in pTargetScriptObj as optional String) returns optional any
