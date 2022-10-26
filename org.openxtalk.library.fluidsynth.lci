@@ -15,8 +15,9 @@ import module org.openxtalk.library.fluidsynth
   handler fsGetCPULoad() returns optional any
   handler fsGetSoundFontCount() returns optional Number
   handler fsMIDIFileToSoundFile(in pSoundFontPath as String, in pMIDIFilePath as String, in pSoundFilePath as String) returns optional any
-  handler fsLoadSoundFont(in pFilename as String) returns optional any
+  handler fsLoadSoundFont(in pTargetScriptObj as optional String) returns optional any
   handler fsGetSoundFontByID(in pSoundFontID as Number) returns optional fs_SOUNDFONT
+  handler fsGetFallbackSoundFont() returns String
   handler fsListLoadedSoundFonts() returns String
   handler fsGetSoundFontNameByIndex(in tIndex as optional Number) returns optional String
   handler fsMIDIPlayerInit() returns optional any
