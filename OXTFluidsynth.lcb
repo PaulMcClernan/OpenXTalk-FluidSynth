@@ -562,7 +562,9 @@ resources folder. This soundbank is meant as a fallback for when no other
 soundbanks are available. Download a larger Soundfont for better quality playback.
 */
 public handler fsGetFallbackSoundFont() returns String
-      return my resources folder & "/FreeFont.sf2"
+      variable tFallbackBank
+      put (my resources folder) & "/FreeFont.sf2" into tFallbackBank
+      return tFallbackBank
 end handler
 
 public handler fsListLoadedSoundFonts() returns String
