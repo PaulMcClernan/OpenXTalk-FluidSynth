@@ -1,6 +1,6 @@
 library org.openxtalk.library.fluidsynth
 
-metadata version is "0.61"
+metadata version is "0.6"
 metadata author is "Paul McClernan,FerrusLogic"
 metadata title is "OpenXTalk.org FluidSynth"
 metadata userVisible is "true" -- Show Widget in ... ?
@@ -65,8 +65,8 @@ __safe foreign handler fluid_synth_get_cpu_load(in pSynth as fs_SYNTH) returns C
 __safe foreign handler fluid_synth_sfload(in pSynth as fs_SYNTH,in pFilename as ZStringNative,in pResetPresets as CBool) returns CSInt binds to "c:libfluidsynth>fluid_synth_sfload"
 __safe foreign handler fluid_synth_add_sfont(in pSynth as fs_SYNTH, in pSoudFont as fs_SOUNDFONT ) returns CSInt binds to "c:libfluidsynth>fluid_synth_add_sfont"
 __safe foreign handler fluid_synth_remove_sfont(in pSynth as fs_SYNTH,in pSoudFont as fs_SOUNDFONT ) returns CSInt binds to "c:libfluidsynth>fluid_synth_remove_sfont"
-__safe foreign handler fluid_synth_sfunload(in pSynth as fs_SYNTH, in pSoudFont as fs_SOUNDFONT, in pReset as CInt) returns CSInt binds to "c:libfluidsynth>fluid_synth_sfunload"
-__safe foreign handler fluid_synth_sfreload(in pSynth as fs_SYNTH, in pSoudFont as fs_SOUNDFONT) returns CSInt binds to "c:libfluidsynth>fluid_synth_sfreload"
+__safe foreign handler fluid_synth_sfunload(in pSynth as fs_SYNTH,in pSoudFont as fs_SOUNDFONT, in pReset as CInt) returns CSInt binds to "c:libfluidsynth>fluid_synth_sfunload"
+__safe foreign handler fluid_synth_sfreload(in pSynth as fs_SYNTH,in pSoundFontId as Cint) returns CSInt binds to "c:libfluidsynth>fluid_synth_sfreload"
 __safe foreign handler fluid_synth_get_sfont(in pSynth as fs_SYNTH, in pSFontIndexNum as CInt) returns optional fs_SOUNDFONT binds to "c:libfluidsynth>fluid_synth_get_sfont" -- Index is 0 to _sfcount -1
 __safe foreign handler fluid_synth_get_sfont_by_id(in pSynth as fs_SYNTH, in pSFontID as CInt) returns optional fs_SOUNDFONT binds to "c:libfluidsynth>fluid_synth_get_sfont_by_id"
 __safe foreign handler fluid_sfont_get_name(in pSoundFont as optional fs_SOUNDFONT) returns optional Pointer binds to "c:libfluidsynth>fluid_sfont_get_name" -- pointer to *char string
@@ -163,7 +163,6 @@ __safe foreign handler MCMemoryDeallocate(in rBlockPtr as Pointer) returns nothi
 __safe foreign handler MCWidgetGetMyScriptObject(out rObject as ScriptObject) returns nothing binds to "<builtin>"
 
 private handler fsPostMIDIinput(in tMsgType as Integer, in pChan as Integer, pNoteNum as Integer, pVelocity as optional Integer) returns nothing
-   expect that (pChan >= 1 and pChan <= 16 ) because "MIDI channel values must be in the range of 1 to 16"
    -- variable tScriptObj as ScriptObject
 	-- MCWidgetGetMyScriptObject(tScriptObj)
 	-- log tScriptObj
@@ -218,7 +217,7 @@ private handler fsHandleMIDIinput(in pMyDataPtr as optional Pointer, in mMIDIEvt
 	variable tNoteNum as Integer
 	variable tVelocity as Integer
 	put fluid_midi_event_get_type(mMIDIEvtPtr) into tMsgType
-	put fluid_midi_event_get_channel(mMIDIEvtPtr) + 1 into tChan
+	put fluid_midi_event_get_channel(mMIDIEvtPtr) into tChan
 	-- log [tMsgType] -- ,tChan,tNoteNum,tVelocity]
 	if tMsgType = 144 then
       put fluid_midi_event_get_key(mMIDIEvtPtr) into tNoteNum
@@ -522,28 +521,6 @@ public handler fsGetSoundFontByID(in pSoundFontID as Integer) returns optional f
 	end if
 end handler
 
-public handler fsUnloadSoundFontIndex(in pSoundFontIndex as Integer) returns optional any
-	variable tStatus as Integer
-	variable tSelectedSoundFont as optional fs_SOUNDFONT
-   -- put nothing into tSelectedSoundFont
-	if fsEnsureInitialize() then
-      if pSoundFontIndex > -1 then
-         put fluid_synth_get_sfont(mSynth, pSoundFontIndex) into tSelectedSoundFont
-         if tSelectedSoundFont is not nothing then
-   		      put fluid_synth_sfunload(mSynth, tSelectedSoundFont, true) into tStatus
-               return tStatus
-         else
-               return "No Soundfont found at index " & pSoundFontIndex formatted as string
-         end if
-		else
-         return nothing
-      end if
-   else
-      return nothing
-	end if
-   return nothing
-end handler
-
 handler fsGetSoundFontByIndex(in pSoundFontIndex as Integer) returns optional fs_SOUNDFONT
 	variable tCount as Integer
 	variable tSelectedSoundFont as optional fs_SOUNDFONT
@@ -613,7 +590,7 @@ public handler fsListLoadedSoundFonts() returns String
             put tIterate formatted as string && tString & "\n" after tStringList
          end if
       -- else
-      --    put tIterate formatted as string && "Error\n" after tStringList
+      --   put tIterate formatted as string && "Error\n" after tStringList
       -- end if
    end repeat
    return tStringList
@@ -922,10 +899,7 @@ pMIDIChanNum: The MIDI Channel to play the note on, 1 to 16
 Description: Immediately sends a MIDI Note On message with the given pitch and velocity on the given channel.
 */
 public handler fsNoteOn(in pChannel as Integer, in pKey as Integer, in pVel as Integer)
-   -- expect that (pKey >= 0 and pKey <= 127 ) because "MIDI pitch values must be in the range of 0 to 127"
-   -- expect that (pVel >= 0 and pVel <= 127 ) because "MIDI veloctiy values must be in the range of 0 to 127"
-   expect that (pChannel >= 1 and pChannel <= 16 ) because "MIDI channel values must be in the range of 1 to 16"
-	fluid_synth_noteon(mSynth,pChannel -1 ,pKey,pVel)
+	fluid_synth_noteon(mSynth,pChannel,pKey,pVel)
 end handler
 
 /**
@@ -949,9 +923,7 @@ Description:
 Immediately sends a MIDI Note Off message with the given pitch on the given channel.
 */
 public handler fsNoteOff(in pChannel as Integer, in pKey as Integer)
-      -- expect that (pKey >= 0 and pKey <= 127 ) because "MIDI pitch values must be in the range of 0 to 127"
-      expect that (pChannel >= 1 and pChannel <= 16 ) because "MIDI channel values must be in the range of 1 to 16"
-	fluid_synth_noteoff(mSynth,pChannel - 1,pKey)
+	fluid_synth_noteoff(mSynth,pChannel,pKey)
 end handler
 
 
@@ -975,8 +947,7 @@ Description:
 The send pitchbend with fine range from 0 to 16384, 8192 is centered (no bend)
 */
 public handler fsPitchBend(in pChannel as Integer, in pBend as Integer)
-   expect that (pChannel >= 1 and pChannel <= 16 ) because "MIDI channel values must be in the range of 1 to 16"
-	fluid_synth_pitch_bend(mSynth,pChannel -1, pBend)
+	fluid_synth_pitch_bend(mSynth,pChannel,pBend)
 end handler
 
 
@@ -1002,18 +973,15 @@ public handler fsProgramChange(in pChannel as Integer, in pProgramNum as Integer
 end handler
 
 public handler fsBankSelect(in pChannel as Integer, in pProgramNum as Integer)
-   expect that (pChannel >= 1 and pChannel <= 16 ) because "MIDI channel values must be in the range of 1 to 16"
-	fluid_synth_bank_select(mSynth,pChannel -1 ,pProgramNum)
+	fluid_synth_bank_select(mSynth,pChannel,pProgramNum)
 end handler
 
 public handler fsAllNotesOff(in pChannel as Integer)
-   expect that (pChannel >= 1 and pChannel <= 16 ) because "MIDI channel values must be in the range of 1 to 16"
-	fluid_synth_all_notes_off(mSynth,pChannel -1 )
+	fluid_synth_all_notes_off(mSynth,pChannel)
 end handler
 
 public handler fsAllSoundsOff(in pChannel as Integer)
-   expect that (pChannel >= 1 and pChannel <= 16 ) because "MIDI channel values must be in the range of 1 to 16"
-	fluid_synth_all_sounds_off(mSynth,pChannel -1 )
+	fluid_synth_all_sounds_off(mSynth,pChannel)
 end handler
 
 /**
@@ -1038,7 +1006,7 @@ Description:
 Sends a controller message with a single data byte value to a given channel
 */
 public handler fsContinuousController(in pChannel as Integer, in pController as Integer, in pValue as Integer)
-   fluid_synth_cc(mSynth,pChannel -1 ,pController,pValue) -- returns CSInt
+   fluid_synth_cc(mSynth,pChannel,pController,pValue) -- returns CSInt
 end handler
 
 
