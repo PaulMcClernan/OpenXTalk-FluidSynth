@@ -38,6 +38,7 @@ private variable mAudioDriver	as optional fs_AUIDIOdrvr
 private variable mPlayer as optional fs_PLAYER
 private variable mSelectedSoundFont	as optional fs_SOUNDFONT
 private variable mSoundFont as optional fs_SOUNDFONT
+private variable mSoundFontIDCount as optional CInt
 private variable mMIDIDriver as optional fs_MIDIdrvr
 
 __safe foreign handler new_fluid_settings() returns fs_SETTINGS binds to "c:libfluidsynth>new_fluid_settings"
@@ -65,8 +66,8 @@ __safe foreign handler fluid_synth_get_cpu_load(in pSynth as fs_SYNTH) returns C
 __safe foreign handler fluid_synth_sfload(in pSynth as fs_SYNTH,in pFilename as ZStringNative,in pResetPresets as CBool) returns CSInt binds to "c:libfluidsynth>fluid_synth_sfload"
 __safe foreign handler fluid_synth_add_sfont(in pSynth as fs_SYNTH, in pSoudFont as fs_SOUNDFONT ) returns CSInt binds to "c:libfluidsynth>fluid_synth_add_sfont"
 __safe foreign handler fluid_synth_remove_sfont(in pSynth as fs_SYNTH,in pSoudFont as fs_SOUNDFONT ) returns CSInt binds to "c:libfluidsynth>fluid_synth_remove_sfont"
-__safe foreign handler fluid_synth_sfunload(in pSynth as fs_SYNTH, in pSoudFont as fs_SOUNDFONT, in pReset as CInt) returns CSInt binds to "c:libfluidsynth>fluid_synth_sfunload"
-__safe foreign handler fluid_synth_sfreload(in pSynth as fs_SYNTH, in pSoudFont as fs_SOUNDFONT) returns CSInt binds to "c:libfluidsynth>fluid_synth_sfreload"
+__safe foreign handler fluid_synth_sfunload(in pSynth as fs_SYNTH, in pSFontID as CInt, in pReset as CInt) returns CSInt binds to "c:libfluidsynth>fluid_synth_sfunload"
+__safe foreign handler fluid_synth_sfreload(in pSynth as fs_SYNTH, in pSFontID as CInt) returns CSInt binds to "c:libfluidsynth>fluid_synth_sfreload"
 __safe foreign handler fluid_synth_get_sfont(in pSynth as fs_SYNTH, in pSFontIndexNum as CInt) returns optional fs_SOUNDFONT binds to "c:libfluidsynth>fluid_synth_get_sfont" -- Index is 0 to _sfcount -1
 __safe foreign handler fluid_synth_get_sfont_by_id(in pSynth as fs_SYNTH, in pSFontID as CInt) returns optional fs_SOUNDFONT binds to "c:libfluidsynth>fluid_synth_get_sfont_by_id"
 __safe foreign handler fluid_sfont_get_name(in pSoundFont as optional fs_SOUNDFONT) returns optional Pointer binds to "c:libfluidsynth>fluid_sfont_get_name" -- pointer to *char string
@@ -476,25 +477,49 @@ Description:
 Give a file path fsLoadSoundFont attempts tp load a Soundbank file in either SoundFont2 (.sf2) or
 Downloadable Sound DLS format (.dls) for use with MIDI playback.
 */
+private variable mSoundFontList as optional List
 public handler fsLoadSoundFont(in pFilename as optional String) returns optional any
    if pFilename is nothing or pFileName is the empty string then
       put fsGetFallbackSoundFont() into pFilename -- FreeFont default SoundFont
    end if
-	variable tStatus as Integer
+	variable tSoundFontID as Integer
+   variable tSFList as List
+
 	if fsEnsureInitialize() then
 		if fluid_is_soundfont(pFilename) then
-			put fluid_synth_sfload(mSynth,pFilename,true) into tStatus
-			if tStatus is not kFLUID_FAILED then
-				return tStatus
-			else
-				return "Error: SoundFont did not load!"
-			end if
+         -- check if this soundfont has already been loaded
+   			put fluid_synth_sfload(mSynth,pFilename,true) into tSoundFontID
+   			if tSoundFontID is kFLUID_FAILED then
+   				return "Error: SoundFont did not load!"
+   			end if
 		else
 			return "Error: File May not be a valid SoundFont File!"
 		end if
 	else
 		return "Error: FluidSynth not initialized!"
 	end if
+   -- put tSFArray into mSoundFontList
+   -- log [mSoundFontList]
+   put mSoundFontList into tSFList
+   push (tSoundFontID formatted as string) &"\t" & pFilename onto tSFList
+   put tSFList into mSoundFontList
+   -- log [mSoundFontList]
+   return tSoundFontID formatted as string &"\t" & pFilename
+end handler
+
+public handler fsLoadedSoundFonts() returns optional any
+   variable tListLine as String
+   variable tListStr as String
+   variable tList as List
+   if mSoundFontList is not nothing then
+      put mSoundFontList into tList
+      repeat for each element tListLine in tList
+         put tListLine &"\n" after tListStr
+      end repeat
+      return tListStr
+   else
+      return "No Sound Fonts in List"
+   end if
 end handler
 
 public handler fsGetSoundFontByID(in pSoundFontID as Integer) returns optional fs_SOUNDFONT
@@ -522,19 +547,21 @@ public handler fsGetSoundFontByID(in pSoundFontID as Integer) returns optional f
 	end if
 end handler
 
-public handler fsUnloadSoundFontIndex(in pSoundFontIndex as Integer) returns optional any
+public handler fsUnloadSoundFontIndex(in pSoundFontID as Integer) returns optional any
 	variable tStatus as Integer
 	variable tSelectedSoundFont as optional fs_SOUNDFONT
-   -- put nothing into tSelectedSoundFont
+   put nothing into tSelectedSoundFont
 	if fsEnsureInitialize() then
-      if pSoundFontIndex > -1 then
-         put fluid_synth_get_sfont(mSynth, pSoundFontIndex) into tSelectedSoundFont
-         if tSelectedSoundFont is not nothing then
-   		      put fluid_synth_sfunload(mSynth, tSelectedSoundFont, true) into tStatus
+      if pSoundFontID > -1 then
+          put fsGetSoundFontByIndex( pSoundFontID ) into tSelectedSoundFont
+          log [tSelectedSoundFont]
+         -- if tSelectedSoundFont is not nothing then
+   		      put fluid_synth_sfunload(mSynth,pSoundFontID,0) into tStatus
+               -- put nothing into  mSoundFont
                return tStatus
-         else
-               return "No Soundfont found at index " & pSoundFontIndex formatted as string
-         end if
+         --else
+         --      return "No Soundfont found at index " & pSoundFontIndex formatted as string
+         --end if
 		else
          return nothing
       end if
@@ -601,10 +628,11 @@ public handler fsListLoadedSoundFonts() returns String
    put nothing into tSelectedSoundFont
    put the empty string into tStringList
    put fsGetSoundFontCount() into tCount
-   -- log tCount
-   repeat with tIterate from 1 up to tCount by 1
-      put fluid_synth_get_sfont_by_id(mSynth, tIterate) into tSelectedSoundFont
-      -- if mSoundFont is not nothing then
+   log tCount
+   repeat with tIterate from 0 up to tCount by 1
+      -- put fluid_synth_get_sfont_by_id(mSynth, tIterate) into tSelectedSoundFont
+       put fluid_synth_get_sfont_by_id(mSynth, tIterate) into tSelectedSoundFont
+      if tSelectedSoundFont is not nothing then
          put fluid_sfont_get_name(tSelectedSoundFont) into tStrPtr
          if not MCStringCreateWithCString(tStrPtr, tString) then
             put tIterate formatted as string & "\n" after tStringList
@@ -614,7 +642,7 @@ public handler fsListLoadedSoundFonts() returns String
          end if
       -- else
       --    put tIterate formatted as string && "Error\n" after tStringList
-      -- end if
+      end if
    end repeat
    return tStringList
 end handler
