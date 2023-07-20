@@ -65,11 +65,16 @@ __safe foreign handler delete_fluid_synth(in pSynth as fs_SYNTH) returns CBool b
 __safe foreign handler fluid_synth_get_cpu_load(in pSynth as fs_SYNTH) returns CDouble binds to "c:libfluidsynth>fluid_synth_get_cpu_load"
 __safe foreign handler fluid_synth_sfload(in pSynth as fs_SYNTH,in pFilename as ZStringNative,in pResetPresets as CBool) returns CSInt binds to "c:libfluidsynth>fluid_synth_sfload"
 __safe foreign handler fluid_synth_add_sfont(in pSynth as fs_SYNTH, in pSoudFont as fs_SOUNDFONT ) returns CSInt binds to "c:libfluidsynth>fluid_synth_add_sfont"
+__safe foreign handler fluid_synth_get_bank_offset(in pSynth as fs_SYNTH, in pSoudFont as fs_SOUNDFONT ) returns CUInt binds to "c:libfluidsynth>fluid_synth_get_bank_offset"
+
 __safe foreign handler fluid_synth_remove_sfont(in pSynth as fs_SYNTH,in pSoudFont as fs_SOUNDFONT ) returns CSInt binds to "c:libfluidsynth>fluid_synth_remove_sfont"
 __safe foreign handler fluid_synth_sfunload(in pSynth as fs_SYNTH, in pSFontID as CInt, in pReset as CInt) returns CSInt binds to "c:libfluidsynth>fluid_synth_sfunload"
 __safe foreign handler fluid_synth_sfreload(in pSynth as fs_SYNTH, in pSFontID as CInt) returns CSInt binds to "c:libfluidsynth>fluid_synth_sfreload"
-__safe foreign handler fluid_synth_get_sfont(in pSynth as fs_SYNTH, in pSFontIndexNum as CInt) returns optional fs_SOUNDFONT binds to "c:libfluidsynth>fluid_synth_get_sfont" -- Index is 0 to _sfcount -1
+__safe foreign handler fluid_synth_get_sfont(in pSynth as fs_SYNTH, in pSFontIndex as CInt) returns optional fs_SOUNDFONT binds to "c:libfluidsynth>fluid_synth_get_sfont"
+-- Index is 0 to _sfcount -1
 __safe foreign handler fluid_synth_get_sfont_by_id(in pSynth as fs_SYNTH, in pSFontID as CInt) returns optional fs_SOUNDFONT binds to "c:libfluidsynth>fluid_synth_get_sfont_by_id"
+__safe foreign handler fluid_synth_get_sfont_by_name(in pSynth as fs_SYNTH, in pFilename as ZStringNative, in pSFontID as CInt) returns optional fs_SOUNDFONT binds to "c:libfluidsynth>fluid_synth_get_sfont_by_name"
+
 __safe foreign handler fluid_sfont_get_name(in pSoundFont as optional fs_SOUNDFONT) returns optional Pointer binds to "c:libfluidsynth>fluid_sfont_get_name" -- pointer to *char string
 __safe foreign handler fluid_synth_sfcount(in pSynth as fs_SYNTH ) returns CInt binds to "c:libfluidsynth>fluid_synth_sfcount"
 __safe foreign handler fluid_synth_system_reset(in pSynth as fs_SYNTH) returns CBool binds to "c:libfluidsynth>fluid_synth_system_reset"
@@ -85,7 +90,7 @@ __safe foreign handler fluid_synth_program_select_by_sfont_name(in pSynth as fs_
 __safe foreign handler fluid_synth_program_select(in pSynth as fs_SYNTH, in pChan as CInt, in pSFontID as CInt, in pBankNum as CInt, in pPreset as CInt ) returns CSInt binds to "c:libfluidsynth>fluid_synth_program_select"
 __safe foreign handler fluid_synth_unset_program(in pSynth as fs_SYNTH, in pChan as CInt) returns CSInt binds to "c:libfluidsynth>fluid_synth_unset_program"
 
-__safe foreign handler fluid_synth_get_program(in pSynth as fs_SYNTH, in pChan as CInt, inout rSFontID as optional CInt, inout rBank as optional Number, inout rPreset as optional Number ) returns CSInt binds to "c:libfluidsynth>fluid_synth_get_program"
+__safe foreign handler fluid_synth_get_program(in pSynth as fs_SYNTH, in pChan as CInt, out rSFontID as optional CInt, out rBank as optional CInt, out rPreset as optional CInt ) returns CSInt binds to "c:libfluidsynth>fluid_synth_get_program"
 
 __safe foreign handler fluid_synth_all_notes_off(in pSynth as fs_SYNTH,in pChan as CInt) returns CSInt binds to "c:libfluidsynth>fluid_synth_all_notes_off"
 __safe foreign handler fluid_synth_all_sounds_off(in pSynth as fs_SYNTH,in pChan as CInt) returns CSInt binds to "c:libfluidsynth>fluid_synth_all_sounds_off"
@@ -407,11 +412,13 @@ public handler fsGetProgram(in pChan as Integer) returns optional any
    put -1 into tStatus
 	if fsEnsureInitialize() then
 		if mSynth is not nothing then
-         put fluid_synth_get_program(mSynth, pChan, rSoundfontID, rBankNum, rPresetNum) into tStatus
+         put fluid_synth_get_program(mSynth, pChan - 1, rSoundfontID, rBankNum, rPresetNum) into tStatus
          if tStatus = -1 then
             return "Error"
          else
-            return rSoundfontID
+            log [rSoundfontID, rBankNum, rPresetNum]
+            return [rSoundfontID, rBankNum, rPresetNum]
+            -- return rSoundfontID
          -- log [rSoundfontID, rBankNum, rPresetNum]
          end if
       else
@@ -1074,24 +1081,46 @@ Description:
 Sends Program Change message on the given channel.
 */
 public handler fsProgramChange(in pChannel as Integer, in pProgramNum as Integer)
-   expect that (pProgramNum >= 0 and pProgramNum <= 127 ) because "MIDI controller selection must be in the range of 0 to 127"
+   expect that (pProgramNum >= 0 and pProgramNum <= 127 ) because "MIDI preset numbers must be in the range of 0 to 127"
    expect that (pChannel >= 1 and pChannel <= 16 ) because "MIDI channel values must be in the range of 1 to 16"
-	fluid_synth_program_change(mSynth, pChannel - 1, pProgramNum)
+   variable tStatus as Integer
+	put fluid_synth_program_change(mSynth, pChannel - 1, pProgramNum) into tStatus
+   -- log tStatus
 end handler
 
-public handler fsBankSelect(in pChannel as Integer, in pProgramNum as Integer)
+public handler fsProgramSelectBySoundfontName(in pChannel as Integer, in pFilename as String, in pBank as Integer, in pProgramNum as Integer)
+   expect that (pBank >= 0 and pBank <= 127 ) because "MIDI bank numbers must be in the range of 0 to 127"
+   expect that (pProgramNum >= 0 and pProgramNum <= 127 ) because "MIDI preset numbers must be in the range of 0 to 127"
    expect that (pChannel >= 1 and pChannel <= 16 ) because "MIDI channel values must be in the range of 1 to 16"
-	fluid_synth_bank_select(mSynth,pChannel -1 ,pProgramNum)
+   expect that (pFilename is not the empty string ) because "Soundfont Name must be provided"
+   variable tStatus as Integer
+	put fluid_synth_program_select_by_sfont_name(mSynth, pChannel - 1, pFilename, pBank, pProgramNum) into tStatus
+   -- log tStatus
+end handler
+
+-- fluid_synth_program_select(in pSynth as fs_SYNTH, in pChan as CInt, in pSFontID as CInt, in pBankNum as CInt, in pPreset as CInt ) returns CSInt binds to "c:libfluidsynth>fluid_synth_program_select"
+-- fluid_synth_unset_program(in pSynth as fs_SYNTH, in pChan as CInt) returns CSInt binds to "c:libfluidsynth>fluid_synth_unset_program"
+
+public handler fsBankSelect(in pChannel as Integer, in pBank as Integer)
+   expect that (pChannel >= 1 and pChannel <= 16 ) because "MIDI channel values must be in the range of 1 to 16"
+   expect that (pBank >= 0 and pBank <= 127 ) because "MIDI bank numbers must be in the range of 0 to 127"
+   variable tStatus as Integer
+	put fluid_synth_bank_select(mSynth,pChannel -1 ,pBank) into tStatus
+   -- log tStatus
 end handler
 
 public handler fsAllNotesOff(in pChannel as Integer)
    expect that (pChannel >= 1 and pChannel <= 16 ) because "MIDI channel values must be in the range of 1 to 16"
-	fluid_synth_all_notes_off(mSynth,pChannel -1 )
+   variable tStatus as Integer
+	put fluid_synth_all_notes_off(mSynth,pChannel -1 ) into tStatus
+   -- log tStatus
 end handler
 
 public handler fsAllSoundsOff(in pChannel as Integer)
    expect that (pChannel >= 1 and pChannel <= 16 ) because "MIDI channel values must be in the range of 1 to 16"
-	fluid_synth_all_sounds_off(mSynth,pChannel -1 )
+   variable tStatus as Integer
+	put fluid_synth_all_sounds_off(mSynth,pChannel -1 ) into tStatus
+   -- log tStatus
 end handler
 
 /**
