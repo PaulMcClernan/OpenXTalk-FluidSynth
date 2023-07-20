@@ -1,0 +1,156 @@
+bplist00ÑXUTI-Data×	
+_public.utf8-plain-text_$com.apple.traditional-mac-plain-text_com.apple.webarchive[public.html_ public.utf16-external-plain-textZpublic.rtf_public.utf16-plain-text_b
+FLUIDSYNTH_API int fluid_synth_unset_program	(	fluid_synth_t * 	synth,
+int 	chan	 
+)			
+Set the preset of a MIDI channel to an unassigned state.
+
+Parameters:
+synth 	FluidSynth instance
+chan 	MIDI channel number (0 to MIDI channel count - 1)
+Returns:
+FLUID_OK on success, FLUID_FAILED otherwise
+Since:
+1.1.1
+Note: Channel retains its SoundFont ID and bank numbers, while the program number is set to an "unset" state. MIDI program changes may re-assign a preset if one matches.
+
+References FLUID_FAILED, fluid_synth_program_change(), and fluid_synth_unset_program().
+
+Referenced by fluid_synth_unset_program().ObFLUIDSYNTH_API int fluid_synth_unset_program	(	fluid_synth_t * 	synth,int 	chan	 )			Set the preset of a MIDI channel to an unassigned state.Parameters:synth 	FluidSynth instancechan 	MIDI channel number (0 to MIDI channel count - 1)Returns:FLUID_OK on success, FLUID_FAILED otherwiseSince:1.1.1Note: Channel retains its SoundFont ID and bank numbers, while the program number is set to an "unset" state. MIDI program changes may re-assign a preset if one matches.References FLUID_FAILED, fluid_synth_program_change(), and fluid_synth_unset_program().Referenced by fluid_synth_unset_program().OXbplist00Ñ_WebMainResourceÕ	
+_WebResourceData_WebResourceMIMEType_WebResourceTextEncodingName^WebResourceURL_WebResourceFrameNameO<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><meta charset="UTF-8"><div class="memproto" style="font-family: &quot;Lucida Grande&quot;, Verdana, Geneva, Arial, sans-serif; font-size: 12px; border-top-width: 1px; border-top-style: solid; border-top-color: rgb(132, 176, 199); border-left-width: 1px; border-left-style: solid; border-left-color: rgb(132, 176, 199); border-right-width: 1px; border-right-style: solid; border-right-color: rgb(132, 176, 199); padding: 0px; background-color: rgb(213, 225, 232); font-weight: bold; background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgb(228, 233, 245)), to(rgb(193, 205, 232))); -webkit-box-shadow: rgba(0, 0, 0, 0.15) 5px 5px 5px; border-top-right-radius: 8px; border-top-left-radius: 8px; caret-color: rgb(0, 0, 0); color: rgb(0, 0, 0); font-style: normal; font-variant-caps: normal; letter-spacing: normal; orphans: auto; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: auto; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: none;"><table class="memname" style="font-family: &quot;Lucida Grande&quot;, Verdana, Geneva, Arial, sans-serif; font-size: 12px; white-space: nowrap; font-weight: bold; margin-left: 6px;"><tbody><tr><td class="memname" style="white-space: nowrap; font-weight: bold; margin-left: 6px;">FLUIDSYNTH_API int fluid_synth_unset_program<span class="Apple-converted-space">Â </span></td><td>(</td><td class="paramtype" style="white-space: nowrap;"><a class="el" href="types_8h.html#ae265f10ae174a13afe010de50d87e1a4" style="color: rgb(27, 119, 197); font-weight: bold; text-decoration: none;">fluid_synth_t</a><span class="Apple-converted-space">Â </span>*Â </td><td class="paramname" style="color: rgb(96, 32, 32); white-space: nowrap;"><em style="font-style: normal;">synth</em>,<span class="Apple-converted-space">Â </span></td></tr><tr><td class="paramkey" style="text-align: right;"></td><td></td><td class="paramtype" style="white-space: nowrap;">intÂ </td><td class="paramname" style="color: rgb(96, 32, 32); white-space: nowrap;"><em style="font-style: normal;">chan</em></td><td>Â </td></tr><tr><td></td><td>)</td><td></td><td></td><td></td></tr></tbody></table></div><div class="memdoc" style="font-family: &quot;Lucida Grande&quot;, Verdana, Geneva, Arial, sans-serif; font-size: 12px; border-width: 0px 1px 1px; border-bottom-style: solid; border-bottom-color: rgb(132, 176, 199); border-left-style: solid; border-left-color: rgb(132, 176, 199); border-right-style: solid; border-right-color: rgb(132, 176, 199); padding: 2px 5px; background-color: rgb(238, 243, 245); border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; -webkit-box-shadow: rgba(0, 0, 0, 0.15) 5px 5px 5px; caret-color: rgb(0, 0, 0); color: rgb(0, 0, 0); font-style: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: auto; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: auto; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: none;"><p style="font-family: &quot;Lucida Grande&quot;, Verdana, Geneva, Arial, sans-serif; font-size: 12px;">Set the preset of a MIDI channel to an unassigned state.<span class="Apple-converted-space">Â </span></p><dl style="font-family: &quot;Lucida Grande&quot;, Verdana, Geneva, Arial, sans-serif; font-size: 12px;"><dt style="font-weight: bold;"><b>Parameters:</b></dt><dd><table border="0" cellspacing="2" cellpadding="0" style="font-family: &quot;Lucida Grande&quot;, Verdana, Geneva, Arial, sans-serif; font-size: 12px;"><tbody><tr><td valign="top"></td><td valign="top"><em>synth</em>Â </td><td>FluidSynth instance<span class="Apple-converted-space">Â </span></td></tr><tr><td valign="top"></td><td valign="top"><em>chan</em>Â </td><td>MIDI channel number (0 to MIDI channel count - 1)<span class="Apple-converted-space">Â </span></td></tr></tbody></table></dd></dl><dl class="return" style="font-family: &quot;Lucida Grande&quot;, Verdana, Geneva, Arial, sans-serif; font-size: 12px;"><dt style="font-weight: bold;"><b>Returns:</b></dt><dd><a class="el" href="misc_8h.html#ae4efb1c3ce0d550c922504adfb0fb886" title="Value that indicates success, used by most libfluidsynth functions." style="color: rgb(27, 119, 197); font-weight: bold; text-decoration: none;">FLUID_OK</a><span class="Apple-converted-space">Â </span>on success,<span class="Apple-converted-space">Â </span><a class="el" href="misc_8h.html#a90e8bdbc5a507bbfa5c45bac85a63a61" title="Value that indicates failure, used by most libfluidsynth functions." style="color: rgb(27, 119, 197); font-weight: bold; text-decoration: none;">FLUID_FAILED</a><span class="Apple-converted-space">Â </span>otherwise<span class="Apple-converted-space">Â </span></dd></dl><dl class="since" style="font-family: &quot;Lucida Grande&quot;, Verdana, Geneva, Arial, sans-serif; font-size: 12px;"><dt style="font-weight: bold;"><b>Since:</b></dt><dd>1.1.1</dd></dl><p style="font-family: &quot;Lucida Grande&quot;, Verdana, Geneva, Arial, sans-serif; font-size: 12px;">Note: Channel retains its SoundFont ID and bank numbers, while the program number is set to an "unset" state. MIDI program changes may re-assign a preset if one matches.<span class="Apple-converted-space">Â </span></p><p style="font-family: &quot;Lucida Grande&quot;, Verdana, Geneva, Arial, sans-serif; font-size: 12px;">References<span class="Apple-converted-space">Â </span><a class="el" href="misc_8h_source.html#l00060" style="color: rgb(27, 119, 197); font-weight: bold; text-decoration: none;">FLUID_FAILED</a>,<span class="Apple-converted-space">Â </span><a class="el" href="fluid__synth_8c_source.html#l02393" style="color: rgb(27, 119, 197); font-weight: bold; text-decoration: none;">fluid_synth_program_change()</a>, and<span class="Apple-converted-space">Â </span><a class="el" href="fluid__synth_8c_source.html#l02507" style="color: rgb(27, 119, 197); font-weight: bold; text-decoration: none;">fluid_synth_unset_program()</a>.</p><p style="font-family: &quot;Lucida Grande&quot;, Verdana, Geneva, Arial, sans-serif; font-size: 12px;">Referenced by<span class="Apple-converted-space">Â </span><a class="el" href="fluid__synth_8c_source.html#l02507" style="color: rgb(27, 119, 197); font-weight: bold; text-decoration: none;">fluid_synth_unset_program()</a>.</p></div>Ytext/htmlUUTF-8_Vhttps://fluidsynth.sourceforge.net/api/synth_8h.html#a3fba596ce8f5f4c0e54d8013348e80c4P    ( : P n } ”´¾Ä                           O´<meta charset="UTF-8"><div class="memproto" style="font-family: &quot;Lucida Grande&quot;, Verdana, Geneva, Arial, sans-serif; font-size: 12px; border-top-width: 1px; border-top-style: solid; border-top-color: rgb(132, 176, 199); border-left-width: 1px; border-left-style: solid; border-left-color: rgb(132, 176, 199); border-right-width: 1px; border-right-style: solid; border-right-color: rgb(132, 176, 199); padding: 0px; background-color: rgb(213, 225, 232); font-weight: bold; background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgb(228, 233, 245)), to(rgb(193, 205, 232))); -webkit-box-shadow: rgba(0, 0, 0, 0.15) 5px 5px 5px; border-top-right-radius: 8px; border-top-left-radius: 8px; caret-color: rgb(0, 0, 0); color: rgb(0, 0, 0); font-style: normal; font-variant-caps: normal; letter-spacing: normal; orphans: auto; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: auto; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: none;"><table class="memname" style="font-family: &quot;Lucida Grande&quot;, Verdana, Geneva, Arial, sans-serif; font-size: 12px; white-space: nowrap; font-weight: bold; margin-left: 6px;"><tbody><tr><td class="memname" style="white-space: nowrap; font-weight: bold; margin-left: 6px;">FLUIDSYNTH_API int fluid_synth_unset_program<span class="Apple-converted-space">Â </span></td><td>(</td><td class="paramtype" style="white-space: nowrap;"><a class="el" href="https://fluidsynth.sourceforge.net/api/types_8h.html#ae265f10ae174a13afe010de50d87e1a4" style="color: rgb(27, 119, 197); font-weight: bold; text-decoration: none;">fluid_synth_t</a><span class="Apple-converted-space">Â </span>*Â </td><td class="paramname" style="color: rgb(96, 32, 32); white-space: nowrap;"><em style="font-style: normal;">synth</em>,<span class="Apple-converted-space">Â </span></td></tr><tr><td class="paramkey" style="text-align: right;"></td><td></td><td class="paramtype" style="white-space: nowrap;">intÂ </td><td class="paramname" style="color: rgb(96, 32, 32); white-space: nowrap;"><em style="font-style: normal;">chan</em></td><td>Â </td></tr><tr><td></td><td>)</td><td></td><td></td><td></td></tr></tbody></table></div><div class="memdoc" style="font-family: &quot;Lucida Grande&quot;, Verdana, Geneva, Arial, sans-serif; font-size: 12px; border-width: 0px 1px 1px; border-bottom-style: solid; border-bottom-color: rgb(132, 176, 199); border-left-style: solid; border-left-color: rgb(132, 176, 199); border-right-style: solid; border-right-color: rgb(132, 176, 199); padding: 2px 5px; background-color: rgb(238, 243, 245); border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; -webkit-box-shadow: rgba(0, 0, 0, 0.15) 5px 5px 5px; caret-color: rgb(0, 0, 0); color: rgb(0, 0, 0); font-style: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: auto; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: auto; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: none;"><p style="font-family: &quot;Lucida Grande&quot;, Verdana, Geneva, Arial, sans-serif; font-size: 12px;">Set the preset of a MIDI channel to an unassigned state.<span class="Apple-converted-space">Â </span></p><dl style="font-family: &quot;Lucida Grande&quot;, Verdana, Geneva, Arial, sans-serif; font-size: 12px;"><dt style="font-weight: bold;"><b>Parameters:</b></dt><dd><table border="0" cellspacing="2" cellpadding="0" style="font-family: &quot;Lucida Grande&quot;, Verdana, Geneva, Arial, sans-serif; font-size: 12px;"><tbody><tr><td valign="top"></td><td valign="top"><em>synth</em>Â </td><td>FluidSynth instance<span class="Apple-converted-space">Â </span></td></tr><tr><td valign="top"></td><td valign="top"><em>chan</em>Â </td><td>MIDI channel number (0 to MIDI channel count - 1)<span class="Apple-converted-space">Â </span></td></tr></tbody></table></dd></dl><dl class="return" style="font-family: &quot;Lucida Grande&quot;, Verdana, Geneva, Arial, sans-serif; font-size: 12px;"><dt style="font-weight: bold;"><b>Returns:</b></dt><dd><a class="el" href="https://fluidsynth.sourceforge.net/api/misc_8h.html#ae4efb1c3ce0d550c922504adfb0fb886" title="Value that indicates success, used by most libfluidsynth functions." style="color: rgb(27, 119, 197); font-weight: bold; text-decoration: none;">FLUID_OK</a><span class="Apple-converted-space">Â </span>on success,<span class="Apple-converted-space">Â </span><a class="el" href="https://fluidsynth.sourceforge.net/api/misc_8h.html#a90e8bdbc5a507bbfa5c45bac85a63a61" title="Value that indicates failure, used by most libfluidsynth functions." style="color: rgb(27, 119, 197); font-weight: bold; text-decoration: none;">FLUID_FAILED</a><span class="Apple-converted-space">Â </span>otherwise<span class="Apple-converted-space">Â </span></dd></dl><dl class="since" style="font-family: &quot;Lucida Grande&quot;, Verdana, Geneva, Arial, sans-serif; font-size: 12px;"><dt style="font-weight: bold;"><b>Since:</b></dt><dd>1.1.1</dd></dl><p style="font-family: &quot;Lucida Grande&quot;, Verdana, Geneva, Arial, sans-serif; font-size: 12px;">Note: Channel retains its SoundFont ID and bank numbers, while the program number is set to an "unset" state. MIDI program changes may re-assign a preset if one matches.<span class="Apple-converted-space">Â </span></p><p style="font-family: &quot;Lucida Grande&quot;, Verdana, Geneva, Arial, sans-serif; font-size: 12px;">References<span class="Apple-converted-space">Â </span><a class="el" href="https://fluidsynth.sourceforge.net/api/misc_8h_source.html#l00060" style="color: rgb(27, 119, 197); font-weight: bold; text-decoration: none;">FLUID_FAILED</a>,<span class="Apple-converted-space">Â </span><a class="el" href="https://fluidsynth.sourceforge.net/api/fluid__synth_8c_source.html#l02393" style="color: rgb(27, 119, 197); font-weight: bold; text-decoration: none;">fluid_synth_program_change()</a>, and<span class="Apple-converted-space">Â </span><a class="el" href="https://fluidsynth.sourceforge.net/api/fluid__synth_8c_source.html#l02507" style="color: rgb(27, 119, 197); font-weight: bold; text-decoration: none;">fluid_synth_unset_program()</a>.</p><p style="font-family: &quot;Lucida Grande&quot;, Verdana, Geneva, Arial, sans-serif; font-size: 12px;">Referenced by<span class="Apple-converted-space">Â </span><a class="el" href="https://fluidsynth.sourceforge.net/api/fluid__synth_8c_source.html#l02507" style="color: rgb(27, 119, 197); font-weight: bold; text-decoration: none;">fluid_synth_unset_program()</a>.</p></div>OÈÿþF L U I D S Y N T H _ A P I   i n t   f l u i d _ s y n t h _ u n s e t _ p r o g r a m 
+ ( 
+ f l u i d _ s y n t h _ t   *   
+ s y n t h , 
+ 
+ 
+ i n t   
+ c h a n 
+   
+ 
+ ) 
+ 
+ 
+ 
+ S e t   t h e   p r e s e t   o f   a   M I D I   c h a n n e l   t o   a n   u n a s s i g n e d   s t a t e . 
+ P a r a m e t e r s : 
+ 
+ s y n t h   
+ F l u i d S y n t h   i n s t a n c e 
+ 
+ c h a n   
+ M I D I   c h a n n e l   n u m b e r   ( 0   t o   M I D I   c h a n n e l   c o u n t   -   1 ) 
+ R e t u r n s : 
+ F L U I D _ O K   o n   s u c c e s s ,   F L U I D _ F A I L E D   o t h e r w i s e 
+ S i n c e : 
+ 1 . 1 . 1 
+ N o t e :   C h a n n e l   r e t a i n s   i t s   S o u n d F o n t   I D   a n d   b a n k   n u m b e r s ,   w h i l e   t h e   p r o g r a m   n u m b e r   i s   s e t   t o   a n   " u n s e t "   s t a t e .   M I D I   p r o g r a m   c h a n g e s   m a y   r e - a s s i g n   a   p r e s e t   i f   o n e   m a t c h e s . 
+ R e f e r e n c e s   F L U I D _ F A I L E D ,   f l u i d _ s y n t h _ p r o g r a m _ c h a n g e ( ) ,   a n d   f l u i d _ s y n t h _ u n s e t _ p r o g r a m ( ) . 
+ R e f e r e n c e d   b y   f l u i d _ s y n t h _ u n s e t _ p r o g r a m ( ) . _"Â{\rtf1\ansi\ansicpg1252\cocoartf2709
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 LucidaGrande-Bold;\f1\fnil\fcharset0 LucidaGrande;}
+{\colortbl;\red255\green255\blue255;\red204\green218\blue226;\red0\green0\blue0;\red109\green109\blue109;
+\red17\green37\blue117;\red76\green22\blue24;\red234\green240\blue242;}
+{\*\expandedcolortbl;;\cssrgb\c83529\c88235\c90980;\cssrgb\c0\c0\c0;\cssrgb\c50196\c50196\c50196;
+\cssrgb\c8235\c21569\c53333;\cssrgb\c37647\c12549\c12549;\cssrgb\c93333\c95294\c96078;}
+\deftab720
+
+\itap1\trowd \taflags0 \trgaph108\trleft-108 \trmarl120 \trbrdrt\brdrnil \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalc \clshdrawnil \clwWidth5935\clftsWidth3 \clmart10 \clmarl130 \clmarb10 \clmarr10 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt20 \clpadl20 \clpadb20 \clpadr20 \gaph\cellx1728
+\clvertalc \clshdrawnil \clwWidth89\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt20 \clpadl20 \clpadb20 \clpadr20 \gaph\cellx3456
+\clvertalc \clshdrawnil \clwWidth1853\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt20 \clpadl20 \clpadb20 \clpadr20 \gaph\cellx5184
+\clvertalc \clshdrawnil \clwWidth747\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt20 \clpadl20 \clpadb20 \clpadr20 \gaph\cellx6912
+\clmrg \clvertalc \clshdrawnil \clwWidth747\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt20 \clpadl20 \clpadb20 \clpadr20 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+
+\f0\b\fs24 \cf0 \cb2 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec3 FLUIDSYNTH_API int fluid_synth_unset_program\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf0 \cb2 (\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://fluidsynth.sourceforge.net/api/types_8h.html#ae265f10ae174a13afe010de50d87e1a4"}}{\fldrslt \cf5 \cb2 \strokec5 fluid_synth_t}}\cb2  *\'a0\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf6 \cb2 \strokec6 synth,\cb1 \cell 
+\pard\intbl\itap1\cell \row
+
+\itap1\trowd \taflags0 \trgaph108\trleft-108 \trmarl120 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalc \clshdrawnil \clwWidth5935\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt20 \clpadl20 \clpadb20 \clpadr20 \gaph\cellx1728
+\clvertalc \clshdrawnil \clwWidth89\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt20 \clpadl20 \clpadb20 \clpadr20 \gaph\cellx3456
+\clvertalc \clshdrawnil \clwWidth1853\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt20 \clpadl20 \clpadb20 \clpadr20 \gaph\cellx5184
+\clvertalc \clshdrawnil \clwWidth747\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt20 \clpadl20 \clpadb20 \clpadr20 \gaph\cellx6912
+\clvertalc \clshdrawnil \clwWidth79\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt20 \clpadl20 \clpadb20 \clpadr20 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\qr\partightenfactor0
+\cf0 \strokec3 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf0 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf0 \cb2 int\'a0\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf6 \cb2 \strokec6 chan\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf0 \cb2 \strokec3 \'a0\cb1 \cell \row
+
+\itap1\trowd \taflags0 \trgaph108\trleft-108 \trmarl120 \trbrdrl\brdrnil \trbrdrt\brdrnil \trbrdrr\brdrnil 
+\clvertalc \clshdrawnil \clwWidth5935\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt20 \clpadl20 \clpadb20 \clpadr20 \gaph\cellx1728
+\clvertalc \clshdrawnil \clwWidth89\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt20 \clpadl20 \clpadb20 \clpadr20 \gaph\cellx3456
+\clvertalc \clshdrawnil \clwWidth1853\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt20 \clpadl20 \clpadb20 \clpadr20 \gaph\cellx5184
+\clvertalc \clshdrawnil \clwWidth747\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt20 \clpadl20 \clpadb20 \clpadr20 \gaph\cellx6912
+\clvertalc \clshdrawnil \clwWidth79\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt20 \clpadl20 \clpadb20 \clpadr20 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf0 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf0 \cb2 )\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf0 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf0 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf0 \cell \lastrow\row
+\pard\pardeftab720\sa240\partightenfactor0
+
+\f1\b0 \cf0 \cb7 Set the preset of a MIDI channel to an unassigned state.\cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\f0\b \cf0 \cb7 Parameters:\cb1 \
+
+\itap1\trowd \taflags0 \trgaph108\trleft-108 \trbrdrt\brdrnil \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clshdrawnil \clmart20 \clmarl20 \clmarb20 \clmarr20 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadl0 \clpadr0 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth711\clftsWidth3 \clmart20 \clmarl20 \clmarb20 \clmarr20 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadl0 \clpadr0 \gaph\cellx5760
+\clvertalc \clshdrawnil \clwWidth5942\clftsWidth3 \clmart20 \clmarl20 \clmarb20 \clmarr20 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadl0 \clpadr0 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+
+\f1\b0 \cf0 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf0 \cb7 synth\'a0\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf0 \cb7 FluidSynth instance\cb1 \cell \row
+
+\itap1\trowd \taflags0 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrt\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clshdrawnil \clmart20 \clmarl20 \clmarb20 \clmarr20 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadl0 \clpadr0 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth711\clftsWidth3 \clmart20 \clmarl20 \clmarb20 \clmarr20 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadl0 \clpadr0 \gaph\cellx5760
+\clvertalc \clshdrawnil \clwWidth5942\clftsWidth3 \clmart20 \clmarl20 \clmarb20 \clmarr20 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadl0 \clpadr0 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf0 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf0 \cb7 chan\'a0\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf0 \cb7 MIDI channel number (0 to MIDI channel count - 1)\cb1 \cell \lastrow\row
+\pard\pardeftab720\partightenfactor0
+
+\f0\b \cf0 \cb7 Returns:\cb1 \
+\pard\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://fluidsynth.sourceforge.net/api/misc_8h.html#ae4efb1c3ce0d550c922504adfb0fb886"}}{\fldrslt \cf5 \cb7 \strokec5 FLUID_OK}}
+\f1\b0 \cb7  on success, {\field{\*\fldinst{HYPERLINK "https://fluidsynth.sourceforge.net/api/misc_8h.html#a90e8bdbc5a507bbfa5c45bac85a63a61"}}{\fldrslt 
+\f0\b \cf5 \strokec5 FLUID_FAILED}} otherwise\cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\f0\b \cf0 \cb7 Since:\cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\f1\b0 \cf0 \cb7 1.1.1\cb1 \
+\pard\pardeftab720\sa240\partightenfactor0
+\cf0 \cb7 Note: Channel retains its SoundFont ID and bank numbers, while the program number is set to an "unset" state. MIDI program changes may re-assign a preset if one matches.\cb1 \
+\cb7 References {\field{\*\fldinst{HYPERLINK "https://fluidsynth.sourceforge.net/api/misc_8h_source.html#l00060"}}{\fldrslt 
+\f0\b \cf5 \strokec5 FLUID_FAILED}}, {\field{\*\fldinst{HYPERLINK "https://fluidsynth.sourceforge.net/api/fluid__synth_8c_source.html#l02393"}}{\fldrslt 
+\f0\b \cf5 \strokec5 fluid_synth_program_change()}}, and {\field{\*\fldinst{HYPERLINK "https://fluidsynth.sourceforge.net/api/fluid__synth_8c_source.html#l02507"}}{\fldrslt 
+\f0\b \cf5 \strokec5 fluid_synth_unset_program()}}.\cb1 \
+\cb7 Referenced by {\field{\*\fldinst{HYPERLINK "https://fluidsynth.sourceforge.net/api/fluid__synth_8c_source.html#l02507"}}{\fldrslt 
+\f0\b \cf5 \strokec5 fluid_synth_unset_program()}}.}OÄ F L U I D S Y N T H _ A P I   i n t   f l u i d _ s y n t h _ u n s e t _ p r o g r a m 	 ( 	 f l u i d _ s y n t h _ t   *   	 s y n t h ,  i n t   	 c h a n 	    ) 	 	 	  S e t   t h e   p r e s e t   o f   a   M I D I   c h a n n e l   t o   a n   u n a s s i g n e d   s t a t e .   P a r a m e t e r s :  s y n t h   	 F l u i d S y n t h   i n s t a n c e  c h a n   	 M I D I   c h a n n e l   n u m b e r   ( 0   t o   M I D I   c h a n n e l   c o u n t   -   1 )  R e t u r n s :  F L U I D _ O K   o n   s u c c e s s ,   F L U I D _ F A I L E D   o t h e r w i s e  S i n c e :  1 . 1 . 1  N o t e :   C h a n n e l   r e t a i n s   i t s   S o u n d F o n t   I D   a n d   b a n k   n u m b e r s ,   w h i l e   t h e   p r o g r a m   n u m b e r   i s   s e t   t o   a n   " u n s e t "   s t a t e .   M I D I   p r o g r a m   c h a n g e s   m a y   r e - a s s i g n   a   p r e s e t   i f   o n e   m a t c h e s .   R e f e r e n c e s   F L U I D _ F A I L E D ,   f l u i d _ s y n t h _ p r o g r a m _ c h a n g e ( ) ,   a n d   f l u i d _ s y n t h _ u n s e t _ p r o g r a m ( ) .   R e f e r e n c e d   b y   f l u i d _ s y n t h _ u n s e t _ p r o g r a m ( ) .     # < c z † © ´ Î4šö9®>za@                           f
