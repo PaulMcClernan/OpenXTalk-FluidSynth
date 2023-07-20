@@ -529,3 +529,6 @@ code/x86_64-mac_BigSur/._libsndfile.1.dylib!
 code/x86_64-mac_BigSur/._libvorbis.0.dylib
 code/x86_64-mac_BigSur/._libvorbisenc.2.dylib
 code/x86_64-mac_BigSur/._libvorbisfile.3.dylib
+._OXTFluidsynth 2old
+._OXTFluidsynth.lcb
+samples/._fsTest2.2.livecode
