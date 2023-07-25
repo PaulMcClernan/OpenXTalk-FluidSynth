@@ -69,8 +69,13 @@ __safe foreign handler fluid_synth_get_cpu_load(in pSynth as fs_SYNTH) returns C
 __safe foreign handler fluid_synth_sfload(in pSynth as fs_SYNTH,in pFilename as ZStringNative,in pResetPresets as CBool) returns CSInt binds to "c:libfluidsynth>fluid_synth_sfload"
 __safe foreign handler fluid_synth_add_sfont(in pSynth as fs_SYNTH, in pSoudFont as fs_SOUNDFONT ) returns CSInt binds to "c:libfluidsynth>fluid_synth_add_sfont"
 __safe foreign handler fluid_synth_get_bank_offset(in pSynth as fs_SYNTH, in pSoudFont as fs_SOUNDFONT ) returns CUInt binds to "c:libfluidsynth>fluid_synth_get_bank_offset"
+
 __safe foreign handler fluid_sfont_get_preset(in pSoudFont as fs_SOUNDFONT, in pBankNum as CUint, in pPreset as CUint ) returns optional fs_SFPRESET binds to "c:libfluidsynth>fluid_sfont_get_preset"
 __safe foreign handler fluid_preset_get_name(in pPresetPtr as fs_SFPRESET) returns optional Pointer binds to "c:libfluidsynth>fluid_preset_get_name"
+__safe foreign handler fluid_preset_get_banknum(in pPresetPtr as fs_SFPRESET) returns optional CInt binds to "c:libfluidsynth>fluid_preset_get_banknum"
+__safe foreign handler fluid_preset_get_num(in pPresetPtr as fs_SFPRESET) returns optional CInt binds to "c:libfluidsynth>fluid_preset_get_num"
+__safe foreign handler fluid_sfont_iteration_start(in pSoudFont as fs_SOUNDFONT ) returns nothing binds to "c:libfluidsynth>fluid_sfont_iteration_start"
+__safe foreign handler fluid_sfont_iteration_next(in pSoudFont as fs_SOUNDFONT ) returns optional fs_SFPRESET binds to "c:libfluidsynth>fluid_sfont_iteration_next"
 
 __safe foreign handler fluid_synth_remove_sfont(in pSynth as fs_SYNTH,in pSoudFont as fs_SOUNDFONT ) returns CSInt binds to "c:libfluidsynth>fluid_synth_remove_sfont"
 __safe foreign handler fluid_synth_sfunload(in pSynth as fs_SYNTH, in pSFontID as CInt, in pReset as CInt) returns CSInt binds to "c:libfluidsynth>fluid_synth_sfunload"
@@ -405,6 +410,64 @@ public handler fsGetSoundFontCount() returns optional Integer
 	end if
 end handler
 
+--- GOT IT WORKING!!! Is there really no EASY way to get full list of program names from a Soundfont that is built into FluidSynth (or Apple's AVAUSampler for that matter)???
+public handler fsGetSFPresetListFromID(in pSFID as Integer) returns optional any
+	variable tStatus as Integer
+   variable tPreset as optional fs_SFPRESET
+   variable tSoundFont as optional fs_SOUNDFONT
+   variable tBankNum as Integer
+   variable tPresettNum as Integer
+   variable tStringPtr as optional Pointer
+   variable tString as optional String
+   variable tListString as optional String
+
+   put fluid_synth_get_sfont_by_id(mSynth, pSFID) into tSoundFont
+   if tSoundFont is not nothing then
+      put "" into tListString
+
+      -- add the sound font name (which is typically a file-path ) at beginning of list string
+      -- put fluid_sfont_get_name(tSoundFont) into tStringPtr
+      -- if not MCStringCreateWithCString(tStringPtr, tString) then
+      --   put "Soundfont name not found" & "\n" after tListString
+      --   -- return "Failed to convert const *char to String"
+      -- else if tString is not nothing and tString is not the empty string then
+      --   put tString & "\n" after tListString
+      -- end if
+
+      --- Build peset list text:
+      fluid_sfont_iteration_start(tSoundFont) -- Ensure iterator reset to first preset in the SoundFont
+      repeat forever
+         put fluid_sfont_iteration_next(tSoundFont) into tPreset
+         -- put fluid_sfont_get_preset(tSoundFont, pBankNum, pProgramNum ) into tPreset
+         if tPreset is not nothing then
+            put fluid_preset_get_banknum(tPreset) into tBankNum
+            put fluid_preset_get_num(tPreset) into tPresettNum
+            put fluid_preset_get_name(tPreset) into tStringPtr
+            if tStringPtr is not nothing then
+               if not MCStringCreateWithCString(tStringPtr, tString) then
+                  -- return "Error: Couldn't get name string"
+                  put tBankNum formatted as string &"-"& tPresettNum formatted as string &"\n" after tListString
+                  next repeat
+               else
+                  put tBankNum formatted as string &"-"& tPresettNum formatted as string &" "& tString & "\n" after tListString
+                  next repeat /* iterator */
+               end if
+            -- else
+            --   return "Error: Couldn't get name string pointer"
+            end if
+         else
+            exit repeat
+            -- return "Error: Couldn't get preset"
+         end if
+         next repeat
+      end repeat
+   else
+      log "Error: Couldn't get soundFont"
+   end if
+   if tListString is not the empty string then
+      return tListString
+   end if
+end handler
 
 --- GOT IT WORKING!!! Is there really no EASY way to get full list of program names from a Soundfont that is built into FluidSynth (or Apple's AVAUSampler for that matter)???
 public handler fsGetSFPresetInfo(in pSFID as Integer, in pBankNum as Integer, in pProgramNum as Integer) returns optional any
@@ -431,7 +494,7 @@ public handler fsGetSFPresetInfo(in pSFID as Integer, in pBankNum as Integer, in
          return "Error: Couldn't get preset"
       end if
    else
-      log "Error: Couldn't get soundFont"
+      return "Error: Couldn't get soundFont"
    end if
 end handler
 
@@ -450,7 +513,7 @@ public handler fsGetProgram(in pChan as Integer) returns optional any
          if tStatus = -1 then
             return "Error"
          else
-            log [rSoundfontID, rBankNum, rPresetNum]
+            -- log [rSoundfontID, rBankNum, rPresetNum]
             return [rSoundfontID, rBankNum, rPresetNum]
             -- return rSoundfontID
          -- log [rSoundfontID, rBankNum, rPresetNum]
@@ -704,7 +767,16 @@ soundbanks are available. Download a larger Soundfont for better quality playbac
 */
 public handler fsGetFallbackSoundFont() returns String
       variable tFallbackBank
-      put (my resources folder) & "/FreeFont.sf2" into tFallbackBank
+      -- if resolve file ((my resources folder) & "/FreeFont.sf2") then
+         -- log (my resources folder) & "/FreeFont.sf2"
+         put (my resources folder) & "/FreeFont.sf2" into tFallbackBank
+      -- else
+         --if resolve file ((my resources folder) & "/sf2/FreeFont.sf2") then
+            -- log (my resources folder) & "/sf2/FreeFont.sf2"
+            --put (my resources folder) & "/sf2/FreeFont.sf2" into tFallbackBank
+
+         -- end if
+      -- end if
       return tFallbackBank
 end handler
 
