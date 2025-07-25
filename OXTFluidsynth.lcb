@@ -7,14 +7,11 @@ metadata userVisible is "true" -- Show Widget in ... ?
 metadata _ide is "true" -- ? default load at startup
 
 use com.livecode.foreign
-use com.livecode.canvas
 use com.livecode.string
 use com.livecode.char
 use com.livecode.array
 use com.livecode.list
-use com.livecode.widget
 use com.livecode.engine
-use com.livecode.library.widgetutils
 use com.livecode.system
 
 private type fs_SETTINGS is Pointer
